@@ -500,9 +500,9 @@ class Datatable extends React.Component {
 						this.props.customGroupByNonAggregatedData ? (
 							<div style={{ marginTop: '20px' }}>
 								<ToggleSwitch
-									labelText="Non aggregated data"
+									labelText="Date wise data"
 									className="mB-0"
-									labelSize={6}
+									labelSize={5}
 									componentSize={4}
 									defaultLayout
 									checked={this.state.nonAggregatedToggleChecked}
