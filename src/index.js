@@ -50,8 +50,16 @@ class Datatable extends React.Component {
 			sortedProp: defaultSort,
 			rowsPerPage: props.rowsPerPage,
 			currentPage: 1,
-			filterText: ''
+			filterText: '',
+			nonAggregatedToggleChecked: false,
+			showNonAggregatedData: false
 		};
+
+		this.nonAggregatedToggleCallback = this.nonAggregatedToggleCallback.bind(this);
+	}
+
+	nonAggregatedToggleCallback(value) {
+		this.setState({ showNonAggregatedData: value });
 	}
 
 	componentWillReceiveProps() {
@@ -420,8 +428,16 @@ class Datatable extends React.Component {
 
 		if (filteredData.length !== 0) {
 			for (let i = 0; i < filteredData.length; i += 1) {
+				let style = {};
+
+				if (filteredData[i].nonAggregatedRow && !this.state.showNonAggregatedData) {
+					style.display = 'none';
+				} else {
+					style.display = 'table-row';
+				}
+
 				body.push(
-					<tr key={`${this.props.keyName}-row-${i}`} className="tbody-tr-default">
+					<tr style={style} key={`${this.props.keyName}-row-${i}`} className="tbody-tr-default">
 						{this.renderSingleRow(filteredData, i)}
 					</tr>
 				);
@@ -450,6 +466,7 @@ class Datatable extends React.Component {
 			} else {
 				value = cell(data[rowIdx]);
 			}
+
 			row.push(
 				<td key={`${this.props.keyName}-col-${rowIdx}${i}`} className="tbody-td-default">
 					{value}
@@ -469,9 +486,9 @@ class Datatable extends React.Component {
 
 		const customClass = this.props.tableClass;
 		const tableClass = classNames({
-				'table-datatable': true,
-				[`${customClass}`]: true
-			}),
+			'table-datatable': true,
+			[`${customClass}`]: true
+		}),
 			customToggle = this.props.customToggle,
 			{ toggleText, toggleChecked, toggleName, toggleCallback } = customToggle;
 
@@ -479,6 +496,26 @@ class Datatable extends React.Component {
 			<Row>
 				<Col xs={12} md={4}>
 					{this.renderFilterOption()}
+					{
+						this.props.customGroupByNonAggregatedData ? (
+							<div style={{ marginTop: '20px' }}>
+								<ToggleSwitch
+									labelText="Non aggregated data"
+									className="mB-0"
+									labelSize={6}
+									componentSize={4}
+									defaultLayout
+									checked={this.state.nonAggregatedToggleChecked}
+									name="nonAggregatedToggle"
+									onChange={this.nonAggregatedToggleCallback}
+									layout="horizontal"
+									size="m"
+									id="nonAggregatedToggle"
+									on="On"
+									off="Off"
+								/>
+							</div>) : null
+					}
 				</Col>
 				<Col xs={12} md={4}>
 					{this.renderPaginationOption()}
