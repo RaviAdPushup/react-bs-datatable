@@ -23,6 +23,8 @@ import SelectFilter from './utils/SelectFilter';
 import FontAwesome from './utils/FontAwesome';
 import ToggleSwitch from './utils/ToggleSwitch/index';
 
+const MAX_ROWS_PER_PAGE = 1000;
+
 class Datatable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -59,7 +61,19 @@ class Datatable extends React.Component {
 	}
 
 	nonAggregatedToggleCallback(value) {
-		this.setState({ showNonAggregatedData: value });
+		let rowsPerPage = this.props.rowsPerPage;
+
+		if (!value) {
+			rowsPerPage = MAX_ROWS_PER_PAGE;
+		}
+
+		this.setState({ showNonAggregatedData: value, rowsPerPage });
+	}
+
+	componentWillMount() {
+		if (this.props.customGroupByNonAggregatedData) {
+			this.setState({ rowsPerPage: MAX_ROWS_PER_PAGE });
+		}
 	}
 
 	componentWillReceiveProps() {
