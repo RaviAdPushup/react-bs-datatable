@@ -488,9 +488,17 @@ class Datatable extends React.Component {
 		const tableClass = classNames({
 			'table-datatable': true,
 			[`${customClass}`]: true
-		}),
-			customToggle = this.props.customToggle,
-			{ toggleText, toggleChecked, toggleName, toggleCallback } = customToggle;
+		});
+
+		const customToggle = this.props.customToggle;
+
+		let toggleText = '', toggleChecked = '', toggleName = '', toggleCallback = '';
+		if (customToggle) {
+			toggleText = customToggle.toggleText;
+			toggleChecked = customToggle.toggleChecked;
+			toggleName = customToggle.toggleName;
+			toggleCallback = customToggle.toggleCallback;
+		}
 
 		return (
 			<Row>
