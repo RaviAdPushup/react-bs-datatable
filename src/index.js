@@ -77,10 +77,10 @@ class Datatable extends React.Component {
 	}
 
 	componentWillReceiveProps() {
-		this.setState({
+		this.setState(state => ({
 			filterText: '',
-			currentPage: 1
-		});
+			currentPage: state.currentPage || 1
+		}));
 	}
 
 	onChangeFilter = text => {
